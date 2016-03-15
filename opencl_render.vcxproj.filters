@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="source">
+      <UniqueIdentifier>{21895B69-DE91-7035-0000-0000CA90681B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\util">
+      <UniqueIdentifier>{0d38e5b5-af36-4239-b727-8f948ae04211}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\opencl">
+      <UniqueIdentifier>{264d3c8e-a5b2-4fd4-8565-be72b0bb4156}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="source\main.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\util\writebmp.cpp">
+      <Filter>source\util</Filter>
+    </ClCompile>
+    <ClCompile Include="source\util\trianglelist.cpp">
+      <Filter>source\util</Filter>
+    </ClCompile>
+    <ClCompile Include="source\opencl\raytrace.c">
+      <Filter>source\opencl</Filter>
+    </ClCompile>
+    <ClCompile Include="source\render.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="source\main.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="source\opencl\raytrace.h">
+      <Filter>source\opencl</Filter>
+    </ClInclude>
+    <ClInclude Include="source\util\writebmp.h">
+      <Filter>source\util</Filter>
+    </ClInclude>
+    <ClInclude Include="source\util\trianglelist.h">
+      <Filter>source\util</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
