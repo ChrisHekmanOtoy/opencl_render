@@ -92,7 +92,12 @@
       <IgnoreSpecificDefaultLibraries />
       <SubSystem>Console</SubSystem>
       <AdditionalDependencies>source/3rdparty/opencl-1.2/lib/x86_64/OpenCL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <StackReserveSize>2097152</StackReserveSize>
     </Link>
+    <PreBuildEvent>
+      <Command>xxd -i source/opencl/raytrace_opencl.h &gt; source/opencl/raytrace_opencl.bin.h
+xxd -i source/opencl/raytrace_opencl.c &gt; source/opencl/raytrace_opencl.bin.c</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Intel|x64'">
     <Midl>

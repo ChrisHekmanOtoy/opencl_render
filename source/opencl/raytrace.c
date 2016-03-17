@@ -4,6 +4,9 @@
 	#include <windows.h>
 #endif // WIN32
 
+#include "opencl/raytrace_opencl.bin.h"
+#include "opencl/raytrace_opencl.bin.c"
+
 #include "raytrace.h"
 #include <stdio.h>
 #include <string.h>
@@ -280,7 +283,7 @@ RaytraceAll(cl_uint computationType,
 	if (0 < computationType--) {
 		#define ARGUMENT_COUNT 35
 		char* source[2] = { NULL };
-		char* sourceName[2] = { "source/opencl/raytrace_opencl.h", "source/opencl/raytrace_opencl.c" };
+		size_t sourceLen[2] = { 0 };
 		cl_int2 platDev = platformDevice[computationType];
 		cl_context context = NULL;
 		cl_device_id device = NULL;
@@ -316,26 +319,15 @@ RaytraceAll(cl_uint computationType,
 		if (!context || !device) goto cleanup;
 
 		// fetching the sources before compiling
-		for (i = 0; i < 2; ++i) {
-			long fileLen;
-			FILE* f;
-			if (fopen_s(&f, sourceName[i], "rb")) goto cleanup;
-			fseek(f, 0, SEEK_END);
-			fileLen = ftell(f);
-			source[i] = (char*)malloc(fileLen + 1);
-			rewind(f);
-			if (fileLen != fread(source[i], 1, fileLen, f)) {
-				fclose(f);
-				goto cleanup;
-			}
-			source[i][fileLen] = 0;
-			fclose(f);
-		}
+		source[0] = (char*)source_opencl_raytrace_opencl_h;
+		sourceLen[0] = source_opencl_raytrace_opencl_h_len;
+		source[1] = (char*)source_opencl_raytrace_opencl_c;
+		sourceLen[1] = source_opencl_raytrace_opencl_c_len;
 
 		// Command queue creation and program compiling
 		commandQueue = clCreateCommandQueue(context, device, CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE /*| CL_QUEUE_PROFILING_ENABLE*/, &err);
 		if (err || NULL == commandQueue) goto cleanup;
-		program = clCreateProgramWithSource(context, 2, source, NULL, &err);
+		program = clCreateProgramWithSource(context, 2, source, sourceLen, &err);
 		if (NULL == program) goto cleanup;
 		if (CL_SUCCESS != (err = clBuildProgram(program, 1, &device, "", NULL, NULL))) {
 			char* outputLog = (char*)malloc(128 * 1024 * sizeof(char));
@@ -471,8 +463,8 @@ RaytraceAll(cl_uint computationType,
 			// 90% uptime. Assuming that the scene is rather large, upload and compile
 			// could take 5-10 minutes. We will try to aim for a 45 minutes on average
 			// computation on both CPU and GPU.
-			#define NUMBER_OF_RAYS_PER_FORTYFIVE_MIN_CPU (45 * 1024 * 1024)
-			#define NUMBER_OF_RAYS_PER_FORTYFIVE_MIN_GPU (92 * 1024 * 1024)
+			#define NUMBER_OF_RAYS_PER_FORTYFIVE_MIN_CPU (60 * 1024 * 1024)
+			#define NUMBER_OF_RAYS_PER_FORTYFIVE_MIN_GPU (128 * 1024 * 1024)
 
 			// MAX_WORK_GROUP_SIZE_SQRT x MAX_WORK_GROUP_SIZE_SQRT must be big enough to
 			// fill all parallel processors with some to spare. With modern GPU having
@@ -572,9 +564,6 @@ RaytraceAll(cl_uint computationType,
 		if (kernelRaytraceAll) clReleaseKernel(kernelRaytraceAll); kernelRaytraceAll = NULL;
 		for (i = 0; i < ARGUMENT_COUNT; ++i) {
 			if (memobjs[i]) clReleaseMemObject(memobjs[i]); memobjs[i] = 0;
-		}
-		for (i = 0; i < 2; ++i) {
-			if (source[i]) free(source[i]); source[i] = NULL;
 		}
 	}
 	else {
