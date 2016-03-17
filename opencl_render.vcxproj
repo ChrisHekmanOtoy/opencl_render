@@ -80,6 +80,10 @@
       <SubSystem>Console</SubSystem>
       <AdditionalDependencies>source/3rdparty/opencl-1.2/lib/x86_64/OpenCL.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PreBuildEvent>
+      <Command>xxd -i source/opencl/raytrace_opencl.h &gt; source/opencl/raytrace_opencl.bin.h
+xxd -i source/opencl/raytrace_opencl.c &gt; source/opencl/raytrace_opencl.bin.c</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Midl>
@@ -110,6 +114,10 @@ xxd -i source/opencl/raytrace_opencl.c &gt; source/opencl/raytrace_opencl.bin.c<
       <IgnoreSpecificDefaultLibraries />
       <SubSystem>Console</SubSystem>
     </Link>
+    <PreBuildEvent>
+      <Command>xxd -i source/opencl/raytrace_opencl.h &gt; source/opencl/raytrace_opencl.bin.h
+xxd -i source/opencl/raytrace_opencl.c &gt; source/opencl/raytrace_opencl.bin.c</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ProjectReference Include="$(MAXON_ROOTDIR)\frameworks\cinema.framework\project\cinema.framework.vcxproj">
