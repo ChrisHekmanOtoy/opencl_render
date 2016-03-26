@@ -498,8 +498,8 @@ RaytraceAll(cl_uint computationType,
 			// 90% uptime. Assuming that the scene is rather large, upload and compile
 			// could take 5-10 minutes. We will try to aim for a 45 minutes on average
 			// computation on both CPU and GPU.
-			#define NUMBER_OF_RAYS_PER_FORTYFIVE_MIN_CPU (60 * 1024 * 1024)
-			#define NUMBER_OF_RAYS_PER_FORTYFIVE_MIN_GPU (128 * 1024 * 1024)
+			#define NUMBER_OF_RAYS_PER_FORTYFIVE_MIN_CPU (48 * 1024 * 1024)
+			#define NUMBER_OF_RAYS_PER_FORTYFIVE_MIN_GPU (64 * 1024 * 1024)
 
 			// MAX_WORK_GROUP_SIZE_SQRT x MAX_WORK_GROUP_SIZE_SQRT must be big enough to
 			// fill all parallel processors with some to spare. With modern GPU having
